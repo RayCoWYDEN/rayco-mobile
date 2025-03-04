@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import * as Font from "expo-font";
-import LoginScreen from "./components/pages/LoginScreen";
-import SingUp from "./components/pages/SingUp";
+import LoginScreen from "./components/pages/InitialUserPages/login";
+import SingUp from "./components/pages/InitialUserPages/sign-up";
 import {
   useFonts,
   OpenSans_400Regular as OpenSans,
@@ -13,6 +13,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
+import UserProfile from "./components/pages/UserProfile/user-profile";
 
 
 SplashScreen.preventAutoHideAsync();
@@ -40,8 +41,9 @@ export default function App() {
     <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="SingUp" component={SingUp}  />
+          <Stack.Screen name="UserProfile" component={UserProfile} />
+          {/* <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="SingUp" component={SingUp}  /> */}
         </Stack.Navigator>
       </NavigationContainer>
     </View>
