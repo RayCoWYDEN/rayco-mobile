@@ -1,14 +1,11 @@
 import React from "react";
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  TextInput,
-} from "react-native";
+import { View, TouchableOpacity, Text, TextInput } from "react-native";
 
 import styles from "./styles";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import FormButton from "../../atoms/button";
+import Input from "../../atoms/input";
 
 const SingUp = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -21,39 +18,14 @@ const SingUp = () => {
       </View>
 
       <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          placeholder="Nome"
-          placeholderTextColor="#888"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="E-mail"
-          placeholderTextColor="#888"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Senha"
-          placeholderTextColor="#888"
-          secureTextEntry
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Confirmar Senha"
-          placeholderTextColor="#888"
-          secureTextEntry
-        />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Cadastrar-Se</Text>
-        </TouchableOpacity>
+        <Input placeholder="Nome" />
+        <Input placeholder="E-mail" />
+        <Input placeholder="Senha" secureTextEntry />
+        <Input placeholder="Confirmar Senha" secureTextEntry />
+        <FormButton title="Cadastrar-se" onPress={() => ""} />
       </View>
 
-      <TouchableOpacity
-        style={styles.registerButton}
-        onPress={() => navigation.navigate("Login")}
-      >
-        <Text style={styles.registerText}>Entrar</Text>
-      </TouchableOpacity>
+      <FormButton title="Entrar" onPress={() => navigation.navigate("Login")} isOutline/>
     </View>
   );
 };

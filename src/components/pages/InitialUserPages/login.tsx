@@ -4,6 +4,8 @@ import { View, TouchableOpacity, Text, TextInput } from "react-native";
 import styles from "./styles";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import Input from "../../atoms/input";
+import FormButton from "../../atoms/button";
 
 const LoginScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
@@ -19,28 +21,16 @@ const LoginScreen = () => {
       </View>
 
       <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          placeholder="E-mail"
-          placeholderTextColor="#888"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Senha"
-          placeholderTextColor="#888"
-          secureTextEntry
-        />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Entrar</Text>
-        </TouchableOpacity>
+        <Input placeholder="E-mail" />
+        <Input placeholder="Senha" secureTextEntry />
+        <FormButton title="Entrar" onPress={() => ""} />
       </View>
 
-      <TouchableOpacity
-        style={styles.registerButton}
+      <FormButton
+        title="Cadastrar-se"
         onPress={() => navigation.navigate("SingUp")}
-      >
-        <Text style={styles.registerText}>Cadastrar-se</Text>
-      </TouchableOpacity>
+        isOutline
+      />
     </View>
   );
 };

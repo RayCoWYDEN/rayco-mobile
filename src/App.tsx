@@ -42,8 +42,8 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           <Stack.Screen name="UserProfile" component={UserProfile} />
-          {/* <Stack.Screen name="Login" component={LoginScreen} />
-          <Stack.Screen name="SingUp" component={SingUp}  /> */}
+          {/* <Stack.Screen name="Login" component={LoginScreen} /> */}
+          {/* <Stack.Screen name="SingUp" component={SingUp}  />  */}
         </Stack.Navigator>
       </NavigationContainer>
     </View>

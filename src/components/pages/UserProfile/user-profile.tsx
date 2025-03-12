@@ -1,54 +1,59 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from "react-native";
-import userDefaultImg from '../../../../assets/user-default-img.png';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+} from "react-native";
+import { Feather } from "@expo/vector-icons";
+import Input from "../../atoms/input";
+import FormButton from "../../atoms/button";
 
 const UserProfile = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [course, setCourse] = useState("");
-  const [institution, setInstitution] = useState("");
+  const [name, setName] = useState("Gustavo Anacleto");
+  const [email, setEmail] = useState("gustavo@gmail.com");
+  const [course, setCourse] = useState("Ciência da Computação");
+  const [institution, setInstitution] = useState("Unimetrocamp");
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.avatarContainer}>
-          <Image source={userDefaultImg} style={styles.avatar} />
+          <View style={styles.avatar}>
+            <Feather name="user" size={60} color='#fff'/>
+          </View>
           <TouchableOpacity style={styles.cameraIcon}>
-            <Text style={styles.cameraText}>📷</Text>
+            <Text style={styles.cameraText}><Feather name="camera" size={20}/></Text>
           </TouchableOpacity>
         </View>
         <Text style={styles.headerText}>Editar meu perfil</Text>
       </View>
       <View style={styles.form}>
         <Text style={styles.label}>Dados pessoais</Text>
-        <TextInput
-          style={styles.input}
+        <Input
           placeholder="Nome"
           value={name}
           onChangeText={setName}
         />
-        <TextInput
-          style={styles.input}
+        <Input
           placeholder="Email"
           keyboardType="email-address"
           value={email}
           onChangeText={setEmail}
         />
-        <TextInput
-          style={styles.input}
+        <Input
           placeholder="Curso Atual"
           value={course}
           onChangeText={setCourse}
         />
-        <TextInput
-          style={styles.input}
+        <Input
           placeholder="Instituição Atual"
           value={institution}
           onChangeText={setInstitution}
         />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Salvar alterações</Text>
-        </TouchableOpacity>
+        <FormButton title="Salvar Alterações" onPress={() => ""}/>
       </View>
     </View>
   );
@@ -63,17 +68,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#880046",
     alignItems: "center",
     paddingVertical: 80,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
   },
   avatarContainer: {
     position: "relative",
   },
   avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#CCCCCC",
+    width: 100,
+    height: 100,
+    borderRadius: "100%",
+    backgroundColor: "#000",
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   cameraIcon: {
     position: "absolute",
@@ -89,35 +94,17 @@ const styles = StyleSheet.create({
   headerText: {
     color: "#FFF",
     fontSize: 18,
-    fontWeight: "bold",
-    marginTop: 10,
+    fontFamily: "OpenSansBold",
+    marginTop: 25,
   },
   form: {
+    marginTop: 20,
     padding: 20,
   },
   label: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 18,
+    fontFamily: "OpenSansBold",
     marginBottom: 10,
-  },
-  input: {
-    height: 40,
-    borderColor: "#CCC",
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  button: {
-    backgroundColor: "#880046",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "bold",
   },
 });
 
