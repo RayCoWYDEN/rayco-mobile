@@ -68,6 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#880046",
     alignItems: "center",
     paddingVertical: 80,
+    height: 260,
   },
   avatarContainer: {
     position: "relative",
