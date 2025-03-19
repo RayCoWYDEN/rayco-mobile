@@ -13,6 +13,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
 import UserProfile from "./components/pages/UserProfile/user-profile";
 import Rank from "./components/pages/Rank/rank";
+import LoginScreen from "./components/pages/InitialUserPages/login";
+import SingUp from "./components/pages/InitialUserPages/sign-up";
 
 
 SplashScreen.preventAutoHideAsync();
