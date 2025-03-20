@@ -20,7 +20,7 @@ const CollegeCard = () => {
                 </View>
                 <Text style={styles.details}>Formas de Ingresso: Enem • Vestibular</Text>
             </View>
-            <FontAwesome name="heart-o" size={24} color="black" style={styles.favoriteIcon} />
+            <FontAwesome name="heart-o" size={20} color="black" style={styles.favoriteIcon} />
         </View>
     );
 };
