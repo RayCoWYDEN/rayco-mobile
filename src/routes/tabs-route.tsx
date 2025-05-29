@@ -1,8 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import UserProfile from "./components/pages/UserProfile/user-profile";
-import Rank from "./components/pages/Rank/rank";
+import UserProfile from "../components/pages/UserProfile/user-profile";
+import Rank from "../components/pages/Rank/rank";
 import { StyleSheet } from "react-native";
-import { RankIcon, UserIcon } from "./components/atoms/tab-icons";
+import { HeartIcon, RankIcon, UserIcon } from "../components/atoms/tab-icons";
+import FavoritesUniversities from "../components/pages/FavoritesUniversities/favorites-universities";
 
 const Tab = createBottomTabNavigator();
 
@@ -15,6 +16,7 @@ const Tabs = () => {
         tabBarLabelStyle: {
           color: "#900059",
         },
+        tabBarHideOnKeyboard: true
       }}
     >
       <Tab.Screen
@@ -22,6 +24,13 @@ const Tabs = () => {
         component={Rank}
         options={{
           tabBarIcon: RankIcon,
+        }}
+      />
+      <Tab.Screen
+        name="Favoritas"
+        component={FavoritesUniversities}
+        options={{
+          tabBarIcon: HeartIcon,
         }}
       />
       <Tab.Screen

@@ -1,14 +1,70 @@
-import React from "react";
-import { View, TouchableOpacity, Text, TextInput } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  TextInput,
+  ActivityIndicator,
+} from "react-native";
 
 import styles from "./styles";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Input from "../../atoms/input";
 import FormButton from "../../atoms/button";
+import {
+  getUserLoged,
+  login,
+  removeUserLoged,
+  storeUserLoged,
+} from "../../../services/user.service";
+import { LoginDTO } from "../../../models/login-data.model";
+import { isTokenExpired } from "../../../services/token-service";
 
 const LoginScreen = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
+  useEffect(() => {
+    const verifyUser = async () => {
+      if (await isTokenExpired()) {
+        await removeUserLoged();
+      }
+      
+      const user = await getUserLoged()
+
+      if (user) {
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'Tabs' }],
+        });
+      }
+    };
+
+    verifyUser();
+  }, []);
+
+  async function handleLogin() {
+    const loginDTO: LoginDTO = { email, password };
+
+    setLoading(true);
+    try {
+      const { data } = await login(loginDTO);
+
+      await storeUserLoged(data);
+      navigation.navigate("Tabs");
+    } catch (error: any) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
 
   return (
     <View style={styles.container}>
@@ -21,9 +77,14 @@ const LoginScreen = () => {
       </View>
 
       <View style={styles.form}>
-        <Input placeholder="E-mail" />
-        <Input placeholder="Senha" secureTextEntry />
-        <FormButton title="Entrar" onPress={() => ""} />
+        <Input placeholder="E-mail" value={email} onChangeText={setEmail} />
+        <Input
+          placeholder="Senha"
+          secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+        />
+        <FormButton title="Entrar" onPress={handleLogin} />
       </View>
 
       <FormButton

@@ -1,22 +1,27 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { GRAY_200, PINK_100, PINK_300 } from '../../utils/colors';
 import { MaterialIcons } from '@expo/vector-icons';
-// Material
 
-
-interface IFilterButtonProps {
+interface IProps {
+    filterId: string;
     title: string;
-    onPress: () => void;
+    handleStateChange: (filterId: string) => void;
     selected?: boolean;
+    direction: string
 }
 
-const FilterButton: React.FC<IFilterButtonProps> = (props) => {
-  const { title, onPress, selected = false } = props;
-  return <View style={{...styles.container, backgroundColor: selected ? PINK_100 : GRAY_200}}>
-        <Pressable onPress={onPress}>
+const FilterButton: React.FC<IProps> = (props) => {
+  const { filterId, title, handleStateChange, selected = false , direction} = props;
+  
+  return <View id={filterId} style={{...styles.container, backgroundColor: selected ? PINK_100 : GRAY_200}}>
+        <Pressable onPress={() => handleStateChange(filterId)}>
           <Text style={styles.title}>{title}</Text>
         </Pressable>
-        <MaterialIcons style={{marginTop: 4}} name="keyboard-arrow-down"  size={20} color={PINK_300} />
+        {selected && (
+        direction === 'asc' 
+          ? <MaterialIcons style={{marginTop: 4}} name="keyboard-arrow-up" size={20} color={PINK_300} />
+          : <MaterialIcons style={{marginTop: 4}} name="keyboard-arrow-down" size={20} color={PINK_300} />
+      )}
   </View>;
 };
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 
 import {
@@ -9,12 +9,12 @@ import {
 import { JollyLodger_400Regular as JollyLodger } from "@expo-google-fonts/jolly-lodger";
 
 import { Keyboard, TouchableWithoutFeedback, View } from "react-native";
-import Tabs from "./tabs-route";
-import { NavigationContainer } from "@react-navigation/native";
+import Routes from "./routes";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 SplashScreen.preventAutoHideAsync();
 
-export default function App() {
+const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
     OpenSans,
     OpenSansBold,
@@ -32,12 +32,14 @@ export default function App() {
   }
 
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
-        <NavigationContainer>
-          <Tabs />
-        </NavigationContainer>
+        <Routes />
       </View>
     </TouchableWithoutFeedback>
+    </GestureHandlerRootView>
   );
 }
+
+export default App;

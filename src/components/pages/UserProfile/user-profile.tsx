@@ -10,33 +10,47 @@ import {
 import { Feather } from "@expo/vector-icons";
 import Input from "../../atoms/input";
 import FormButton from "../../atoms/button";
+import { removeUserLoged } from "../../../services/user.service";
+import { ParamListBase, useNavigation } from "@react-navigation/core";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 
 const UserProfile = () => {
   const [name, setName] = useState("Gustavo Anacleto");
   const [email, setEmail] = useState("gustavo@gmail.com");
   const [course, setCourse] = useState("Ciência da Computação");
   const [institution, setInstitution] = useState("Unimetrocamp");
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
+  const handleLogout = () => {
+    removeUserLoged()
+    .then(() => navigation.navigate("Login"))
+  }
+
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+      <TouchableOpacity style={styles.logoutIcon} onPress={handleLogout}>
+        <Feather name="log-out" size={25} />
+      </TouchableOpacity>
         <View style={styles.avatarContainer}>
           <View style={styles.avatar}>
-            <Feather name="user" size={60} color='#fff'/>
+            <Feather name="user" size={60} color="#fff" />
           </View>
           <TouchableOpacity style={styles.cameraIcon}>
-            <Text style={styles.cameraText}><Feather name="camera" size={20}/></Text>
+            <Text style={styles.cameraText}>
+              <Feather name="camera" size={20} />
+            </Text>
           </TouchableOpacity>
         </View>
         <Text style={styles.headerText}>Editar meu perfil</Text>
       </View>
       <View style={styles.form}>
-        <Text style={styles.label}>Dados pessoais</Text>
-        <Input
-          placeholder="Nome"
-          value={name}
-          onChangeText={setName}
-        />
+        <View style={styles.tabsContainer}>
+          <Text style={styles.label}>Dados pessoais</Text>
+          <Text style={styles.label}>Informações Acadêmicas</Text>
+        </View>
+        <Input placeholder="Nome" value={name} onChangeText={setName} />
         <Input
           placeholder="Email"
           keyboardType="email-address"
@@ -53,7 +67,7 @@ const UserProfile = () => {
           value={institution}
           onChangeText={setInstitution}
         />
-        <FormButton title="Salvar Alterações" onPress={() => ""}/>
+        <FormButton title="Salvar Alterações" onPress={() => ""} />
       </View>
     </View>
   );
@@ -78,8 +92,8 @@ const styles = StyleSheet.create({
     height: 100,
     borderRadius: "100%",
     backgroundColor: "#000",
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
   cameraIcon: {
     position: "absolute",
@@ -103,9 +117,20 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   label: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: "OpenSansBold",
-    marginBottom: 10,
+    marginRight: 30,
+  },
+  tabsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 30,
+  },
+  logoutIcon: {
+    position: 'absolute',
+    top: 80,
+    left: 20,
+    zIndex: 1,
   },
 });
 

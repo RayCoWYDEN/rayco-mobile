@@ -1,20 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { paddingTop } from "../../../utils/utils-aligment";
 import FiltersList from "../../molecules/filters-list";
 import { useEffect, useState } from "react";
-import { getUniversities } from "../../../services/universities.service";
-import { PageInfo } from "../../../models/page.model";
-import { UniversityDTO } from "../../../models/universities.model";
 import { ScrollView } from "react-native-gesture-handler";
-import { Sort } from "../../../models/sort.model";
 import UniversityCard from "../../molecules/CollegeCard/college-card";
-
-const intialSorts: Sort[] = [
-  {
-    field: "averageRank",
-    direction: "desc",
-  },
-];
+import { UniversityDTO } from "../../../models/universities.model";
+import { listFavoritesUniversities } from "../../../services/universities.service";
 
 const initialButtonFiltersState = [
   { filterId: "averageRank", title: "Nota", direction: "desc", selected: true },
@@ -27,32 +18,29 @@ const initialButtonFiltersState = [
   { filterId: "name", title: "Nome", direction: "asc", selected: false },
 ];
 
-const Rank = () => {
-  const [universities, setUniversities] = useState<PageInfo<UniversityDTO>>();
+const FavoritesUniversities = () => {
+  const [universities, setUniversities] = useState<UniversityDTO[]>([]);
 
   useEffect(() => {
-    listUniversities(intialSorts);
+    listUniversities();
   }, []);
 
-  const reloadUniversities = () =>{
-    listUniversities(intialSorts)
-  }
-
-  const listUniversities = (sorts: Sort[]) => {
-    getUniversities(sorts)
+  const listUniversities = () => {
+    listFavoritesUniversities()
       .then(({ data }) => setUniversities(data))
       .catch((e) => {
         console.log("Error:", e.response);
       });
   };
 
+
   return (
     <View style={styles.container}>
       <FiltersList listUniversities={listUniversities} initialButtonFiltersState={initialButtonFiltersState}/>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
-          {universities?.content.map((university) => (
-            <UniversityCard key={university.id} university={university}  reloadUniversities={reloadUniversities} />
+          {universities.map((university) => (
+            <UniversityCard key={university.id} university={university}  reloadUniversities={listUniversities} />
           ))}
         </View>
       </ScrollView>
@@ -67,4 +55,4 @@ const styles = StyleSheet.create({
     paddingTop,
   },
 });
-export default Rank;
+export default FavoritesUniversities;
