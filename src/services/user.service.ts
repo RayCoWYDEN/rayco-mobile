@@ -3,8 +3,9 @@ import { UserCreateDTO, UserLogedDTO } from "../models/user-data.model";
 import * as SecureStore from "expo-secure-store";
 
 import axios from "axios";
+import { HOST } from "../utils/constants";
 
-const API_URL = "http://172.16.10.110:9092/";
+const API_URL = `http://${HOST}:9092/`;
 
 const login = (loginData: LoginDTO) => {
   return axios.post(`${API_URL}users/login`, loginData);

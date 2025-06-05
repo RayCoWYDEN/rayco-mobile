@@ -1,5 +1,5 @@
 import { toStringSorts } from "../helpers/sort.helper";
-import api from "../interceptor/api";
+import {api} from "../interceptor/api";
 import { Sort } from "../models/sort.model";
 
 

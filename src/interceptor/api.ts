@@ -1,8 +1,7 @@
 import axios from "axios";
 import { getUserLoged, removeUserLoged } from "../services/user.service";
 import { UserLogedDTO } from "../models/user-data.model";
-
-const HOST = "172.16.10.110";
+import { HOST } from "../utils/constants";
 
 const api = axios.create({
   baseURL: `http://${HOST}:9092/`,
@@ -21,4 +20,4 @@ api.interceptors.request.use(
   }
 );
 
-export default api;
+export {api};

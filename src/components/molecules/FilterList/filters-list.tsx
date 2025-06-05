@@ -1,6 +1,6 @@
 import { StyleSheet, View } from "react-native";
-import FilterButton from "../atoms/filter-button";
-import { Sort } from "../../models/sort.model";
+import FilterButton from "../../atoms/filter-button";
+import { Sort } from "../../../models/sort.model";
 import { useState } from "react";
 
 interface IFiltersListProps {

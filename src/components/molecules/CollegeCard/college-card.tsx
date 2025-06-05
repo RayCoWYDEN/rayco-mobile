@@ -1,25 +1,22 @@
 import React from "react";
-import { StyleSheet, View, Text, Image } from "react-native";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { UniversityDTO } from "../../../models/universities.model";
 import { favoriteUniversity } from "../../../services/universities.service";
 
 interface IProps {
   university: UniversityDTO;
-  reloadUniversities: () => void
+  reloadUniversities: () => void;
+  onPress: () => void; // <- ADICIONAR ISSO
 }
 
-const UniversityCard = (props: IProps) => {
-  const { university, reloadUniversities} = props;
-
-
-  const handleFavorite = (id: number ) => {
-    favoriteUniversity(university.id)
-    .then(() => reloadUniversities())
-  }
+const UniversityCard = ({ university, reloadUniversities, onPress }: IProps) => {
+  const handleFavorite = (id: number) => {
+    favoriteUniversity(university.id).then(() => reloadUniversities());
+  };
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={styles.container}>
       <View style={styles.logo}>
         <FontAwesome name="building" size={30} color={"#7c7c7c"} />
       </View>
@@ -41,11 +38,8 @@ const UniversityCard = (props: IProps) => {
         </View>
         <Text style={styles.details}>
           Formas de Ingresso:{" "}
-          {university.entryTypes.map(
-            (entryType, i) =>
-              `${entryType.name} ${
-                i != university.entryTypes.length - 1 && "•"
-              } `
+          {university.entryTypes.map((entryType, i) =>
+            `${entryType.name}${i !== university.entryTypes.length - 1 ? " • " : ""}`
           )}
         </Text>
       </View>
@@ -56,7 +50,7 @@ const UniversityCard = (props: IProps) => {
         style={styles.favoriteIcon}
         onPress={() => handleFavorite(university.id)}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 

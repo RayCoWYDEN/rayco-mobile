@@ -1,6 +1,6 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { paddingTop } from "../../../utils/utils-aligment";
-import FiltersList from "../../molecules/filters-list";
+import FiltersList from "../../molecules/FilterList/filters-list";
 import { useEffect, useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import UniversityCard from "../../molecules/CollegeCard/college-card";
@@ -20,6 +20,19 @@ const initialButtonFiltersState = [
 
 const FavoritesUniversities = () => {
   const [universities, setUniversities] = useState<UniversityDTO[]>([]);
+  const [selectedUniversity, setSelectedUniversity] =
+    useState<UniversityDTO | null>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const openModal = (university: UniversityDTO) => {
+    setSelectedUniversity(university);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedUniversity(null);
+  };
 
   useEffect(() => {
     listUniversities();
@@ -33,14 +46,21 @@ const FavoritesUniversities = () => {
       });
   };
 
-
   return (
     <View style={styles.container}>
-      <FiltersList listUniversities={listUniversities} initialButtonFiltersState={initialButtonFiltersState}/>
+      <FiltersList
+        listUniversities={listUniversities}
+        initialButtonFiltersState={initialButtonFiltersState}
+      />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
           {universities.map((university) => (
-            <UniversityCard key={university.id} university={university}  reloadUniversities={listUniversities} />
+            <UniversityCard
+              key={university.id}
+              university={university}
+              reloadUniversities={listUniversities}
+              onPress={() => openModal(university)}
+            />
           ))}
         </View>
       </ScrollView>
