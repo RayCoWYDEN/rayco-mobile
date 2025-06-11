@@ -18,3 +18,7 @@ export interface TokenDTO {
   refresh_token: string;
   refresh_expires_in: number;
 }
+
+export interface UserInfoDTO {
+  
+}

@@ -6,6 +6,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import UniversityCard from "../../molecules/CollegeCard/college-card";
 import { UniversityDTO } from "../../../models/universities.model";
 import { listFavoritesUniversities } from "../../../services/universities.service";
+import RatingModal from "../../molecules/RatingModal/rating-modal";
 
 const initialButtonFiltersState = [
   { filterId: "averageRank", title: "Nota", direction: "desc", selected: true },
@@ -46,6 +47,10 @@ const FavoritesUniversities = () => {
       });
   };
 
+  const handleRatingSubmit = (rating: number) => {
+    console.log(`Universidade ${selectedUniversity?.name} avaliada com nota ${rating}`);
+  };
+
   return (
     <View style={styles.container}>
       <FiltersList
@@ -54,16 +59,27 @@ const FavoritesUniversities = () => {
       />
       <ScrollView showsVerticalScrollIndicator={false}>
         <View>
-          {universities.map((university) => (
-            <UniversityCard
-              key={university.id}
-              university={university}
-              reloadUniversities={listUniversities}
-              onPress={() => openModal(university)}
-            />
-          ))}
+          {
+            universities.length === 0
+            ? <Text> Nenhuma universidade favoritada </Text>
+            : (universities.map((university) => (
+              <UniversityCard
+                key={university.id}
+                university={university}
+                reloadUniversities={listUniversities}
+                onPress={() => openModal(university)}
+              />
+            )))
+          }
+          
         </View>
       </ScrollView>
+      <RatingModal
+        visible={modalVisible}
+        university={selectedUniversity}
+        onClose={closeModal}
+        onSubmit={handleRatingSubmit}
+      />
     </View>
   );
 };
