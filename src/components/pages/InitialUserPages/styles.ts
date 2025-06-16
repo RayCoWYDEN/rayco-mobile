@@ -37,17 +37,6 @@ const styles = StyleSheet.create({
       textAlign: "center",
       marginBottom: 50,
     },
-    input: {
-      fontFamily: "OpenSans",
-      fontSize: 17,
-      height: 50,
-      width: "100%",
-      backgroundColor: "#fff",
-      borderRadius: 13,
-      borderWidth: 1,
-      paddingHorizontal: 10,
-      marginBottom: 25,
-    },
     button: {
       height: 50,
       width: "100%",
@@ -57,25 +46,7 @@ const styles = StyleSheet.create({
       alignItems: "center",
       marginBottom: 20,
     },
-    buttonText: {
-      fontFamily: "OpenSansBold",
-      color: "#fff",
-      fontSize: 16,
-    },
-    registerText: {
-      fontFamily: "OpenSansBold",
-      color: "#900059",
-      fontSize: 16,
-    },
-    registerButton: {
-      borderWidth: 2,
-      borderRadius: 30,
-      borderColor: "#900059",
-      height: 50,
-      width: "100%",
-      justifyContent: "center",
-      alignItems: "center",
-    },
+
   });
 
   export default styles;

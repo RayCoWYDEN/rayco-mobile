@@ -1,17 +1,41 @@
-import React from "react";
-import {
-  View,
-  TouchableOpacity,
-  Text,
-  TextInput,
-} from "react-native";
+import React, { useState } from "react";
+import { View, TouchableOpacity, Text, TextInput } from "react-native";
 
 import styles from "./styles";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import FormButton from "../../atoms/button";
+import Input from "../../atoms/input";
+import { register, storeUserLoged } from "../../../services/user.service";
+import { UserCreateDTO } from "../../../models/user-data.model";
 
 const SingUp = () => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
+  async function handleSingUp() {
+    if (password !== confirmPassword) return;
+
+    const user: UserCreateDTO = {
+      name,
+      email,
+      password,
+    };
+
+    setLoading(true);
+    register(user)
+      .then(({ data }) => {
+        storeUserLoged(data);
+        navigation.navigate("Tabs");
+      })
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(false));
+  }
 
   return (
     <View style={styles.container}>
@@ -21,39 +45,33 @@ const SingUp = () => {
       </View>
 
       <View style={styles.form}>
-        <TextInput
-          style={styles.input}
-          placeholder="Nome"
-          placeholderTextColor="#888"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="E-mail"
-          placeholderTextColor="#888"
-        />
-        <TextInput
-          style={styles.input}
+        <Input placeholder="Nome" value={name} onChangeText={setName} />
+        <Input placeholder="E-mail" value={email} onChangeText={setEmail} />
+        <Input
           placeholder="Senha"
-          placeholderTextColor="#888"
           secureTextEntry
+          value={password}
+          onChangeText={setPassword}
+          textContentType="none"
+          autoComplete="off"
         />
-        <TextInput
-          style={styles.input}
+        <Input
           placeholder="Confirmar Senha"
-          placeholderTextColor="#888"
           secureTextEntry
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          textContentType="none"
+          autoComplete="off"
         />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Cadastrar-Se</Text>
-        </TouchableOpacity>
+
+        <FormButton title="Cadastrar-se" onPress={handleSingUp} />
       </View>
 
-      <TouchableOpacity
-        style={styles.registerButton}
+      <FormButton
+        title="Entrar"
         onPress={() => navigation.navigate("Login")}
-      >
-        <Text style={styles.registerText}>Entrar</Text>
-      </TouchableOpacity>
+        isOutline
+      />
     </View>
   );
 };

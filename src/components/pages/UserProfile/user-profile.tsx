@@ -1,58 +1,81 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image, StyleSheet } from "react-native";
-import userDefaultImg from '../../../../assets/user-default-img.png';
+import {
+  View,
+  Text,
+  ScrollView,
+  TouchableOpacity,
+  StyleSheet,
+} from "react-native";
+import { Feather } from "@expo/vector-icons";
+import FormButton from "../../atoms/button";
+import { removeUserLoged } from "../../../services/user.service";
+import { ParamListBase, useNavigation } from "@react-navigation/core";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import PersonalInfo from "./personal-info";
+import AcademicInfo from "./academic-info";
 
 const UserProfile = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [course, setCourse] = useState("");
-  const [institution, setInstitution] = useState("");
+  const [name, setName] = useState("Gustavo Anacleto");
+  const [email, setEmail] = useState("gustavo@gmail.com");
+  const [course, setCourse] = useState("Ciência da Computação");
+  const [university, setUniversity] = useState("Unimetrocamp");
+  const [period, setPeriod] = useState("5º semestre");
+  const [tuitionFee, setTuitionFee] = useState("1200");
+
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
+  const handleSubmmit = () => {
+    
+  } 
+
+  const handleLogout = () => {
+    removeUserLoged().then(() => navigation.navigate("Login"));
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+        <TouchableOpacity style={styles.logoutIcon} onPress={handleLogout}>
+          <Feather name="log-out" size={25} color="#fff" />
+        </TouchableOpacity>
         <View style={styles.avatarContainer}>
-          <Image source={userDefaultImg} style={styles.avatar} />
+          <View style={styles.avatar}>
+            <Feather name="user" size={60} color="#fff" />
+          </View>
           <TouchableOpacity style={styles.cameraIcon}>
-            <Text style={styles.cameraText}>📷</Text>
+            <Text style={styles.cameraText}>
+              <Feather name="camera" size={20} />
+            </Text>
           </TouchableOpacity>
         </View>
         <Text style={styles.headerText}>Editar meu perfil</Text>
       </View>
-      <View style={styles.form}>
-        <Text style={styles.label}>Dados pessoais</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Nome"
-          value={name}
-          onChangeText={setName}
+
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <PersonalInfo
+          name={name}
+          setName={setName}
+          email={email}
+          setEmail={setEmail}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Email"
-          keyboardType="email-address"
-          value={email}
-          onChangeText={setEmail}
+        <AcademicInfo
+          course={course}
+          setCourse={setCourse}
+          university={university}
+          setUniversity={setUniversity}
+          period={period}
+          setPeriod={setPeriod}
+          tuitionFee={tuitionFee}
+          setTuitionFee={setTuitionFee}
         />
-        <TextInput
-          style={styles.input}
-          placeholder="Curso Atual"
-          value={course}
-          onChangeText={setCourse}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Instituição Atual"
-          value={institution}
-          onChangeText={setInstitution}
-        />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Salvar alterações</Text>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.buttonContainer}>
+          <FormButton title="Salvar Alterações" onPress={handleSubmmit} />
+        </View>
+      </ScrollView>
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {
@@ -63,17 +86,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#880046",
     alignItems: "center",
     paddingVertical: 80,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    height: 260,
   },
   avatarContainer: {
     position: "relative",
   },
   avatar: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    backgroundColor: "#CCCCCC",
+    width: 100,
+    height: 100,
+    borderRadius: 50, 
+    backgroundColor: "#000",
+    justifyContent: "center",
+    alignItems: "center",
   },
   cameraIcon: {
     position: "absolute",
@@ -89,35 +113,21 @@ const styles = StyleSheet.create({
   headerText: {
     color: "#FFF",
     fontSize: 18,
-    fontWeight: "bold",
+    fontFamily: "OpenSansBold",
+    marginTop: 25,
+  },
+  logoutIcon: {
+    position: "absolute",
+    top: 80,
+    left: 20,
+    zIndex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 40,
+  },
+  buttonContainer: {
+    paddingHorizontal: 20,
     marginTop: 10,
-  },
-  form: {
-    padding: 20,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginBottom: 10,
-  },
-  input: {
-    height: 40,
-    borderColor: "#CCC",
-    borderWidth: 1,
-    borderRadius: 5,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  button: {
-    backgroundColor: "#880046",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-  },
-  buttonText: {
-    color: "#FFF",
-    fontSize: 16,
-    fontWeight: "bold",
   },
 });
 
