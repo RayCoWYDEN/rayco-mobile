@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 20,
+    textAlign: "center"
   },
   buttonText: {
     fontFamily: "OpenSansBold",
