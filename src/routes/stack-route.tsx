@@ -7,7 +7,7 @@ const Stack = createNativeStackNavigator();
 
 const StackNavigation: React.FC = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Navigator screenOptions={{ headerShown: false, gestureEnabled: false }}>
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="SingUp" component={SingUp} />
       <Stack.Screen name="Tabs" component={Tabs} />

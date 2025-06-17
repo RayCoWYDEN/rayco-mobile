@@ -5,14 +5,15 @@ interface IProps {
   title: string;
   onPress: () => void;
   isOutline?: boolean;
+  disabled?: boolean
 }
 const FormButton = (props: IProps) => {
-  const { title, onPress, isOutline } = props;
+  const { title, isOutline } = props;
 
   return (
     <TouchableOpacity
       style={isOutline ? styles.buttoOutline : styles.button}
-      onPress={onPress}
+      {...props}
     >
       <Text
         style={{

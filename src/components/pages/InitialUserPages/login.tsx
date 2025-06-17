@@ -29,7 +29,6 @@ const LoginScreen = () => {
 
   useEffect(() => {
     const verifyUser = async () => {
-      console.log("Verificando usuário...");
       if (await isTokenExpired()) {
         await removeUserLoged();
       }

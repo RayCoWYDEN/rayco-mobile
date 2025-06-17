@@ -20,5 +20,10 @@ export interface TokenDTO {
 }
 
 export interface UserInfoDTO {
-  
+  name: string;
+  email: string;
+  courseId: number | null;
+  universityId: number | null;
+  period: number | null;
+  tuitionFee: number | null
 }

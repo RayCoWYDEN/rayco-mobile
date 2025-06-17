@@ -1,35 +1,64 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
   StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import FormButton from "../../atoms/button";
-import { removeUserLoged } from "../../../services/user.service";
+import { getUserLoged, removeUserLoged } from "../../../services/user.service";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import PersonalInfo from "./personal-info";
 import AcademicInfo from "./academic-info";
+import { UserInfoDTO } from "../../../models/user-data.model";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 const UserProfile = () => {
-  const [name, setName] = useState("Gustavo Anacleto");
-  const [email, setEmail] = useState("gustavo@gmail.com");
-  const [course, setCourse] = useState("Ciência da Computação");
-  const [university, setUniversity] = useState("Unimetrocamp");
-  const [period, setPeriod] = useState("5º semestre");
-  const [tuitionFee, setTuitionFee] = useState("1200");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [courseId, setCourse] = useState<number | null>(null);
+  const [universityId, setUniversity] = useState<number | null>(null);
+  const [period, setPeriod] = useState<number | null>(null);
+  const [tuitionFee, setTuitionFee] = useState<number | null>(0);
 
   const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
 
+  useEffect(() => {
+    getUserLoged().then((userLogged) => {
+      setName(userLogged!.name);
+      setEmail(userLogged!.email);
+    });
+  }, []);
+
   const handleSubmmit = () => {
-    
-  } 
+    const userInfoDTO: UserInfoDTO = {
+      name,
+      email,
+      courseId,
+      universityId,
+      period,
+      tuitionFee,
+    };
+  };
 
   const handleLogout = () => {
     removeUserLoged().then(() => navigation.navigate("Login"));
+  };
+
+  const isValidForm = () => {
+    return (
+      name != null &&
+      email != null &&
+      courseId != null &&
+      universityId != null &&
+      period != null &&
+      tuitionFee != null
+    );
   };
 
   return (
@@ -50,32 +79,42 @@ const UserProfile = () => {
         </View>
         <Text style={styles.headerText}>Editar meu perfil</Text>
       </View>
-
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <KeyboardAwareScrollView
+        enableOnAndroid
+        extraScrollHeight={20}
+        keyboardShouldPersistTaps="handled"
+        nestedScrollEnabled
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
         <PersonalInfo
           name={name}
           setName={setName}
           email={email}
           setEmail={setEmail}
         />
+
         <AcademicInfo
-          course={course}
+          courseId={courseId}
           setCourse={setCourse}
-          university={university}
+          universityId={universityId}
           setUniversity={setUniversity}
           period={period}
           setPeriod={setPeriod}
           tuitionFee={tuitionFee}
           setTuitionFee={setTuitionFee}
         />
+
         <View style={styles.buttonContainer}>
-          <FormButton title="Salvar Alterações" onPress={handleSubmmit} />
+          <FormButton
+            title="Salvar Alterações"
+            disabled={isValidForm()}
+            onPress={handleSubmmit}
+          />
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -94,7 +133,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 100,
     height: 100,
-    borderRadius: 50, 
+    borderRadius: 50,
     backgroundColor: "#000",
     justifyContent: "center",
     alignItems: "center",
