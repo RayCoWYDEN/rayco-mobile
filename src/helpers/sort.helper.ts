@@ -1,7 +1,6 @@
 import { Sort } from "../models/sort.model";
 
 export const toStringSorts = (sorts: Sort[]): string => {
-    console.log('sorts', sorts)
     let sortsString = '?sort='
     sorts.forEach((sort, i) => {
         if(i == sorts.length - 1){

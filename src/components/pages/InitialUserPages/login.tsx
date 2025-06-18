@@ -5,10 +5,11 @@ import {
   Text,
   TextInput,
   ActivityIndicator,
+  Linking,
 } from "react-native";
 
 import styles from "./styles";
-import { ParamListBase, useNavigation } from "@react-navigation/native";
+import { Link, ParamListBase, useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Input from "../../atoms/input";
 import FormButton from "../../atoms/button";
@@ -32,13 +33,13 @@ const LoginScreen = () => {
       if (await isTokenExpired()) {
         await removeUserLoged();
       }
-      
-      const user = await getUserLoged()
+
+      const user = await getUserLoged();
 
       if (user) {
         navigation.reset({
           index: 0,
-          routes: [{ name: 'Tabs' }],
+          routes: [{ name: "Tabs" }],
         });
       }
     };
@@ -62,6 +63,10 @@ const LoginScreen = () => {
     }
   }
 
+  const openLink = () => {
+    Linking.openURL("https://www.google.com");
+  };
+
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
@@ -84,6 +89,9 @@ const LoginScreen = () => {
           value={password}
           onChangeText={setPassword}
         />
+
+        <Text onPress={openLink} style={{marginBottom:10, ...styles.link}}>Esqueci minha senha</Text>
+
         <FormButton title="Entrar" onPress={handleLogin} />
       </View>
 

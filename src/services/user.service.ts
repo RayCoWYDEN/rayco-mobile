@@ -1,9 +1,10 @@
 import { LoginDTO } from "../models/login-data.model";
-import { UserCreateDTO, UserLogedDTO } from "../models/user-data.model";
+import { UserCreateDTO, UserInfoDTO, UserLogedDTO } from "../models/user-data.model";
 import * as SecureStore from "expo-secure-store";
 
 import axios from "axios";
 import { HOST } from "../utils/constants";
+import { api } from "../interceptor/api";
 
 const API_URL = `http://${HOST}:9092/`;
 
@@ -41,4 +42,8 @@ const removeUserLoged = async () => {
   }
 };
 
-export { login, register, storeUserLoged, getUserLoged, removeUserLoged };
+const saveUserInfo = (userInfoDto: UserInfoDTO) => {
+  return api.post("users/personal-info", userInfoDto) 
+}
+
+export { login, register, storeUserLoged, getUserLoged, removeUserLoged, saveUserInfo };

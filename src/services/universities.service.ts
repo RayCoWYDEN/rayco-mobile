@@ -4,7 +4,6 @@ import { Sort } from "../models/sort.model";
 
 function getUniversities(sorts: Sort[]){
   if(sorts.length > 0){
-    console.log(`universities${toStringSorts(sorts)}`)
     return api.get(`universities${toStringSorts(sorts)}`)
   }
   return api.get(`universities`);

@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 import FormButton from "../../atoms/button";
-import { getUserLoged, removeUserLoged } from "../../../services/user.service";
+import { getUserLoged, removeUserLoged, saveUserInfo } from "../../../services/user.service";
 import { ParamListBase, useNavigation } from "@react-navigation/core";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import PersonalInfo from "./personal-info";
@@ -18,9 +18,11 @@ import AcademicInfo from "./academic-info";
 import { UserInfoDTO } from "../../../models/user-data.model";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { CourseDTO } from "../../../models/course.model";
-import { UniversityDTO, UniversitySaveDTO } from "../../../models/universities.model";
+import { UniversitySaveDTO } from "../../../models/universities.model";
+import { AcademicInfoDTO } from "../../../models/academic-info.model";
 
 const UserProfile = () => {
+  const [userId, setUserId] = useState<number>();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [courseId, setCourse] = useState<number | null>(null);
@@ -34,37 +36,37 @@ const UserProfile = () => {
     getUserLoged().then((userLogged) => {
       setName(userLogged!.name);
       setEmail(userLogged!.email);
+      setUserId(userLogged!.id);
     });
   }, []);
 
   const handleSubmmit = () => {
     const course: CourseDTO = { id : courseId!}
     const university: UniversitySaveDTO = { id : universityId!}
-    const userInfoDTO: UserInfoDTO = {
-      name,
-      email,
+    const academicInfo: AcademicInfoDTO = {
       course,
       university,
-      period,
       tuitionFee,
+      period
+    }
+
+    const userInfoDTO: UserInfoDTO = {
+      id: userId!,
+      name,
+      email,
+      academicInfo
     };
 
-    
+    saveUserInfo(userInfoDTO).then(() => alert("Informações salvas com sucesso"))
   };
 
   const handleLogout = () => {
-    removeUserLoged().then(() => navigation.navigate("Login"));
+    removeUserLoged()
+    .then(() => navigation.navigate("Login"))
+    .catch(e => console.error(e))
   };
 
   const isValidForm = () => {
-    console.log(
-      name != null &&
-        email != null &&
-        courseId != null &&
-        universityId != null &&
-        period != null &&
-        tuitionFee != null 
-    );
     return (
       name != null &&
       email != null &&
