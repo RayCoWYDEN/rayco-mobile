@@ -1,3 +1,6 @@
+import { CourseDTO } from "./course.model";
+import { UniversityDTO, UniversitySaveDTO } from "./universities.model";
+
 export interface UserCreateDTO {
   name: string;
   email: string;
@@ -22,8 +25,8 @@ export interface TokenDTO {
 export interface UserInfoDTO {
   name: string;
   email: string;
-  courseId: number | null;
-  universityId: number | null;
+  course: CourseDTO;
+  university: UniversitySaveDTO;
   period: number | null;
   tuitionFee: number | null
 }

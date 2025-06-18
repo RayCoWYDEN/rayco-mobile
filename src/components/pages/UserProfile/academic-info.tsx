@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import DropDownPicker from "react-native-dropdown-picker";
 import Input from "../../atoms/input";
+import { autocompleteUniverity } from "../../../services/universities.service";
+import { getAutocompleteCourses } from "../../../services/course.service";
 
 interface IProps {
   courseId: number | null;
@@ -37,27 +39,28 @@ const AcademicInfo: React.FC<IProps> = ({
   );
   const [localPeriod, setLocalPeriod] = useState<number | null>(period);
 
-  useEffect(() => {
-    fetch("https://suaapi.com/courses")
-      .then((res) => res.json())
-      .then((data) => {
-        const formatted = data.map((c: any) => ({
-          label: c.name,
-          value: c.id,
+  const loadCourses = () => {
+    getAutocompleteCourses()
+      .then(({data}: any) => {
+        const formatted = data.map((data: any) => ({
+          label: data.name,
+          value: data.id,
         }));
-        setCourseItems(formatted);
-      });
 
-    fetch("https://suaapi.com/universities")
-      .then((res) => res.json())
-      .then((data) => {
-        const formatted = data.map((u: any) => ({
-          label: u.name,
-          value: u.id,
-        }));
-        setUniversityItems(formatted);
-      });
-  }, []);
+        setCourseItems(formatted);
+      })
+      .catch((e) => console.error(e));
+  };
+
+  const loadUniversities = () => {
+    autocompleteUniverity().then(({data}: any) => {
+      const formatted = data.map((data: any) => ({
+        label: data.name,
+        value: data.id,
+      }));
+      setUniversityItems(formatted);
+    });
+  };
 
   useEffect(() => {
     if (localCourseId !== null) setCourse(localCourseId);
@@ -85,6 +88,7 @@ const AcademicInfo: React.FC<IProps> = ({
           setOpen={setOpenCourse}
           setValue={setLocalCourseId}
           setItems={setCourseItems}
+          onOpen={loadCourses}
           placeholder="Selecione um curso"
           style={styles.dropdown}
         />
@@ -98,6 +102,7 @@ const AcademicInfo: React.FC<IProps> = ({
           items={universityItems}
           setOpen={setOpenUniversity}
           setValue={setLocalUniversityId}
+          onOpen={loadUniversities}
           setItems={setUniversityItems}
           placeholder="Selecione uma universidade"
           style={styles.dropdown}
@@ -123,7 +128,7 @@ const AcademicInfo: React.FC<IProps> = ({
       <Text style={styles.label}>Mensalidade Atual</Text>
       <Input
         value={tuitionFee}
-        onChangeText={tuitionFee}
+        onChangeText={setTuitionFee}
         keyboardType="numeric"
       />
     </View>

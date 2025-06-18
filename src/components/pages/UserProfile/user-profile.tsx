@@ -17,6 +17,8 @@ import PersonalInfo from "./personal-info";
 import AcademicInfo from "./academic-info";
 import { UserInfoDTO } from "../../../models/user-data.model";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { CourseDTO } from "../../../models/course.model";
+import { UniversityDTO, UniversitySaveDTO } from "../../../models/universities.model";
 
 const UserProfile = () => {
   const [name, setName] = useState("");
@@ -36,14 +38,18 @@ const UserProfile = () => {
   }, []);
 
   const handleSubmmit = () => {
+    const course: CourseDTO = { id : courseId!}
+    const university: UniversitySaveDTO = { id : universityId!}
     const userInfoDTO: UserInfoDTO = {
       name,
       email,
-      courseId,
-      universityId,
+      course,
+      university,
       period,
       tuitionFee,
     };
+
+    
   };
 
   const handleLogout = () => {
@@ -51,6 +57,14 @@ const UserProfile = () => {
   };
 
   const isValidForm = () => {
+    console.log(
+      name != null &&
+        email != null &&
+        courseId != null &&
+        universityId != null &&
+        period != null &&
+        tuitionFee != null 
+    );
     return (
       name != null &&
       email != null &&
@@ -107,7 +121,7 @@ const UserProfile = () => {
         <View style={styles.buttonContainer}>
           <FormButton
             title="Salvar Alterações"
-            disabled={isValidForm()}
+            disabled={!isValidForm()}
             onPress={handleSubmmit}
           />
         </View>
